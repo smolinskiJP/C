@@ -1,0 +1,88 @@
+// Exercício 1 / João Pedro Moreira Smolinski
+// Calculos de quantos graus tem cada nó de um (Multi)Grafo Orientado com matriz de adjacencia
+#include <stdio.h>
+#include <stdlib.h>
+
+int ** CriaMatriz(int ** matriz, int tam){
+    int i;
+
+    matriz = (int**)malloc(tam * sizeof(int*));
+    for (i = 0; i < tam; i++){
+        matriz[i] = (int*)malloc(tam * sizeof(int));
+    }
+    return matriz;
+}
+
+void LiberaMatriz(int ** matriz, int tam){
+    int i;
+
+    for (i = 0; i < tam; i++){
+        free(matriz[i]);
+    }
+    free(matriz);
+}
+
+int ** GravaMatriz(int ** matriz, int tam){
+
+    int i, j;
+
+    for (i = 0; i < tam; i++){
+        for (j = 0; j < tam; j++){
+            printf("\nNumero de ligacoes %d -> %d: ", (i + 1), (j + 1));
+            scanf(" %d", &matriz[i][j]);
+        }
+    } 
+    return matriz;
+}
+
+void PrintMatriz(int ** matriz, int tam){
+    int i, j;
+    printf("\nMatriz de Adjacencias:\n");
+    for(i = 0; i < tam; i ++){
+        printf("\t|");
+        for (j = 0; j < tam; j++){
+            printf("%d ", matriz[i][j]);
+        }
+        printf("|\n");
+    }
+}
+
+int * ContaGrau(int ** matriz, int tam){
+    int i, j;
+    int * graus = (int*)malloc(tam * sizeof(int));
+    for (i = 0; i < tam; i++){
+        for (j = 0; j < tam; j++){
+            graus[i] += matriz[j][i];
+        }
+    }
+    return graus;
+}
+
+void PrintVetor(int * vetor, int tam){
+    int i;
+    printf("\n");
+    for (i = 0; i < tam; i++){
+        printf(" %d -> %d graus\n", (i+1), vetor[i]);
+    }
+}
+
+int main(){
+
+    int ** grafico;
+    int tam;
+    int * graus;
+
+    printf("Digite o numero de nos do seu grafo: ");
+    scanf(" %d", &tam);
+    grafico = CriaMatriz(grafico, tam);
+    grafico = GravaMatriz(grafico, tam);
+    PrintMatriz(grafico, tam);
+
+    graus = ContaGrau(grafico, tam);
+    PrintVetor(graus, tam);
+    
+
+    LiberaMatriz(grafico, tam);
+    free(graus);
+    return 0;
+}
